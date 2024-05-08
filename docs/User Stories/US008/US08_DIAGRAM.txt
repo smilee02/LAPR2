@@ -1,0 +1,52 @@
+@startuml
+actor Administrator
+autonumber
+
+activate Administrator
+Administrator -> RegisterClinicalAnalysisLaboratoryUI: Starts to register a new clinical analysis laboratory
+activate RegisterClinicalAnalysisLaboratoryUI
+Administrator <-- RegisterClinicalAnalysisLaboratoryUI: Request data\n(i.e Laboratory id, name, address, phone number, TIN number)
+deactivate RegisterClinicalAnalysisLaboratoryUI
+
+
+Administrator -> RegisterClinicalAnalysisLaboratoryUI: Types requested data
+
+
+
+activate RegisterClinicalAnalysisLaboratoryUI
+RegisterClinicalAnalysisLaboratoryUI -> ClinicalAnalysisLaboratoryController: RegisterClinicalAnalysisLaboratory\n(Laboratory id, name, address, phone number, TIN number)
+
+activate ClinicalAnalysisLaboratoryController
+
+
+
+
+
+
+ClinicalAnalysisLaboratoryController -> company: cal = RegisterClinicalAnalysisLaboratory\n(Laboratory id, name, address, phone number, TIN number)
+activate company
+company -->"cal:ClinicalAnalysisLaboratory": create\n(Laboratory id, name, address, phone number, TIN numbers)
+deactivate company
+ClinicalAnalysisLaboratoryController -> company:validateClinicalAnalysisLaboratory(cal)
+activate company
+deactivate company
+Administrator <-- RegisterClinicalAnalysisLaboratoryUI: Show the data and requests a confirmation
+deactivate RegisterClinicalAnalysisLaboratoryUI
+deactivate ClinicalAnalysisLaboratoryController
+Administrator->RegisterClinicalAnalysisLaboratoryUI:Confirms the data
+activate RegisterClinicalAnalysisLaboratoryUI
+RegisterClinicalAnalysisLaboratoryUI->ClinicalAnalysisLaboratoryController:SaveClinicalAnalysisLaboratory()
+activate ClinicalAnalysisLaboratoryController
+ClinicalAnalysisLaboratoryController->company:SaveClinicalAnalysisLaboratory(cal)
+activate company
+company->company: validateClinicalAnalysisLaboratory(cal)
+activate company
+deactivate company
+company->company: addClinicalAnalysisLaboratory(cal)
+activate company
+deactivate company
+deactivate company
+Administrator<--RegisterClinicalAnalysisLaboratoryUI: Informs operation success
+deactivate RegisterClinicalAnalysisLaboratoryUI
+deactivate ClinicalAnalysisLaboratoryController
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+
+title Classes - Class Diagram
+skinparam classAttributeIconSize 0
+
+class Receptionist
+class RegisterTestUI
+class RegisterTestController{
++validateCCN(TIN)
++validateTestType(test type)
++validateParameters(parameters)
++showDto()
++getRegisterTestList()
++RegisterTest(i.e TIN, NHS, test type, parameters)
++saveRegisterTest()
+}
+class RegisterTestMapper{
++dto(rt)
++dtoList(getRegisterTestList)
+}
+class Company{
++getClientList()
++getTestTypeList()
++getParameterList()
++RegisterTest(i.e TIN, NHS, test type, parameters)
++validateRegisterTest(rt)
++saveRegisterTest(rt)
++addRegisterTest(rt)
+}
+class RegisterTest{
+{field}-TIN
+{field}-test type
+{field}-parameters
++create(i.e TIN, NHS, test type, parameters)
+}
+
+Receptionist -d.> RegisterTestUI
+RegisterTestUI -d.> RegisterTestController
+RegisterTestController -d.> Company
+RegisterTestController -R-> RegisterTestMapper: adopts >
+Company -R-> RegisterTest: uses >
+
+
+
+
+@enduml

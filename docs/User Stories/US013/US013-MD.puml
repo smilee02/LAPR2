@@ -1,0 +1,39 @@
+@startuml
+skinparam classAttributeIconSize 0
+Class ClinicalChemistryTechnologist{
+- Employee ID
+- Organization Role
+- Name
+- Address
+- E-mail
+- Phone Number
+- {field}SOC Code
+}
+Class Client{
+- Name
+- Sex
+- Citizen Card Number
+- NHS Number
+- Birth Date
+- Sex
+- TIF
+- Phone Number
+- E-mail
+}
+Class Test{
+- Test Type
+- Internal Code
+- NHS Code
+- Laboratory ID
+- Date of registration
+}
+Class Results{
+- Test
+- Test Parameter Results
+- Date of analysis
+}
+Test "*" -r "1" Client: is from a >
+ClinicalChemistryTechnologist "1..*" -l "1..*"Test: checks the details >
+Results "1" -d "1" Test: is associated with >
+
+@enduml

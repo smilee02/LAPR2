@@ -1,0 +1,14 @@
+@startuml
+autonumber
+actor "Clinical Chemistry Technologist"
+activate "Clinical Chemistry Technologist"
+"Clinical Chemistry Technologist" -> ":System": starts the checking details/results process
+activate ":System"
+":System" --> "Clinical Chemistry Technologist": shows the list of clients ordered
+deactivate ":System"
+"Clinical Chemistry Technologist" -> ":System": chooses the client
+activate ":System"
+":System" --> "Clinical Chemistry Technologist": shows the client test results/details
+deactivate ":System"
+deactivate "Clinical Chemistry Technologist"
+@enduml

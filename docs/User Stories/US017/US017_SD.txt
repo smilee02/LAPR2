@@ -1,0 +1,156 @@
+@startuml
+actor "Laboratory Coordinator"
+autonumber
+
+
+"Laboratory Coordinator"->ImportTestInterfaceController:Starts the interface
+activate "Laboratory Coordinator"
+activate ImportTestInterfaceController
+deactivate ImportTestInterfaceController
+"Laboratory Coordinator"->ImportTestInterfaceController:onActionAddFile()
+activate ImportTestInterfaceController
+"Laboratory Coordinator"<--ImportTestInterfaceController:Asks to choose a file
+deactivate ImportTestInterfaceController
+
+"Laboratory Coordinator"->ImportTestInterfaceController:Chooses file
+activate ImportTestInterfaceController
+ImportTestInterfaceController->ImportTestInterfaceController:filePath = file.getAbsolutePath()
+ImportTestInterfaceController->ImportTestInterfaceController:list = fillFile()
+ImportTestInterfaceController->importedTestConnectorToInterface:clearList()
+activate importedTestConnectorToInterface
+importedTestConnectorToInterface->importedTestController:clearList()
+activate importedTestController
+importedTestController->Company:getImportedTestStore()
+activate Company
+Company->importedTestStore:clearList()
+activate importedTestStore
+deactivate importedTestStore
+deactivate
+deactivate
+deactivate
+ImportTestInterfaceController->importedTestConnectorToInterface:importedTestList = filePart(filePath)
+activate importedTestConnectorToInterface
+importedTestConnectorToInterface->importedTestConnectorToInterface:in = new Scanner(file)
+importedTestConnectorToInterface->importedTestConnectorToInterface:cont=0
+importedTestConnectorToInterface->importedTestConnectorToInterface:valid=0
+importedTestConnectorToInterface->importedTestConnectorToInterface:fail=0
+loop in.hasNextLine()
+alt cont==0
+importedTestConnectorToInterface->importedTestConnectorToInterface:firstLine = in.nextLine()
+importedTestConnectorToInterface->importedTestConnectorToInterface:firstLineArr = convertLine(firstLine)
+else
+importedTestConnectorToInterface->importedTestConnectorToInterface:otherLine = in.nextLine()
+importedTestConnectorToInterface->importedTestConnectorToInterface:otherLineArr = convertLine(otherLine)
+end
+importedTestConnectorToInterface->importedTestConnectorToInterface:registerClient(otherLineArr)
+importedTestConnectorToInterface->importedTestConnectorToInterface:validateName(otherLine[8])
+importedTestConnectorToInterface->importedTestConnectorToInterface:validateEmail(otherLine[9])
+importedTestConnectorToInterface->importedTestConnectorToInterface:validateDate(otherLine[6])
+importedTestConnectorToInterface->importedTestConnectorToInterface:checkNumber(otherLine[3],16)
+importedTestConnectorToInterface->importedTestConnectorToInterface:checkNumber(otherLine[4],10)
+importedTestConnectorToInterface->importedTestConnectorToInterface:checkNumber(otherLine[5],10)
+importedTestConnectorToInterface->importedTestConnectorToInterface:checkNumber(otherLine[7],11)
+importedTestConnectorToInterface->importedTestController:registerClient\n(otherLine[8],otherLine[3],otherLine[4],otherLine[6],otherLine[5],otherLine[7],otherLine[9],otherLine[10])
+activate importedTestController
+alt validateCCN(citizenCardNumber)
+create "client : Client"
+importedTestController->"client : Client":client = new Client\n(name, citizenCardNumber, nhsNumber, birthDate, tin, phoneNumber, email,adress);
+else
+importedTestController->ClientStore:getClients()
+ClientStore->ClientStore:add(client)
+end
+activate ClientStore
+deactivate ClientStore
+deactivate importedTestController
+alt registerTest(firstLineArr,otherLineArr)
+importedTestConnectorToInterface->importedTestConnectorToInterface:testType = otherLine[11]
+importedTestConnectorToInterface->importedTestConnectorToInterface:dateR = convertToDate(otherLine[otherLine.length-4])
+importedTestConnectorToInterface->importedTestConnectorToInterface:dateC = convertToDate(otherLine[otherLine.length-3])
+importedTestConnectorToInterface->importedTestConnectorToInterface:dateV = convertToDate(otherLine[otherLine.length-2])
+importedTestConnectorToInterface->importedTestConnectorToInterface:dateD = convertToDate(otherLine[otherLine.length-1])
+importedTestConnectorToInterface->importedTestController:validateTest(testType);
+activate importedTestController
+importedTestController->Company:typeOfTestList = getTypeOfTestStore()
+activate Company
+Company->TypeOfTestStore:getListOfTypeOfTest()
+activate TypeOfTestStore
+deactivate
+deactivate
+importedTestController->importedTestController:cont=-1
+loop typeOfTestList.size()
+alt typeOfTestList.get(i).getDescription().equals(test)
+importedTestController->importedTestController:cont=i
+end
+end
+importedTestConnectorToInterface->importedTestConnectorToInterface:pos = getCategoryLines(firstLineArr)
+importedTestConnectorToInterface->importedTestConnectorToInterface:parameterCategoryList = getCategories(pos, otherLine)
+importedTestConnectorToInterface->importedTestController:validateCategory(parameterCategoryList, testType)
+ 
+  
+activate importedTestController
+deactivate importedTestController
+importedTestConnectorToInterface->importedTestController:parameterList = validateParameter(parameterCategoryList, testType)
+activate importedTestController
+importedTestController->importedTestController:pos = validateCategory(parameterCategoryList, test)
+
+importedTestConnectorToInterface->importedTestConnectorToInterface:parametersUser = getParametersORValues(pos, firstLineArr)
+deactivate
+importedTestConnectorToInterface->importedTestController:parameterList = getParameterList(parameterList, parametersUser)
+activate importedTestController
+deactivate
+alt registerTest(parameterList, getTypeOfTest(testType), otherLine[1], otherLine[0], otherLine[2]) && addRt(dateC, dateV, dateD, dateR)
+importedTestConnectorToInterface->importedTestController:getTypeOfTest(testType)
+activate importedTestController
+importedTestConnectorToInterface->importedTestController:addRt(dateC, dateV, dateD, dateR)
+importedTestController->Company:getImportedTestStore()
+activate Company
+Company->importedTestStore:addRegisterTest(dateC, dateV, dateD, rt,dateR)
+activate importedTestStore
+importedTestConnectorToInterface->importedTestController:registerTest(parameterList, getTypeOfTest(testType), otherLine[1], otherLine[0], otherLine[2]) && addRt(dateC, dateV, dateD, dateR)
+alt validateLaboratoryId && validateNHS && validateNHS2 && validateTestNumber
+deactivate
+deactivate
+create "registerTest : RegisterTest"
+importedTestController->"registerTest : RegisterTest":rt = new RegisterTest\n(parametersList, client.getTin(), test, nhs, testnumber, laboratoryId);
+end
+importedTestConnectorToInterface->importedTestConnectorToInterface:getParametersORValues(pos,otherLine)
+importedTestConnectorToInterface->importedTestController:registerRecordResult(parameterList,fillArr(stringList))
+importedTestController->Company:getImportedTestStore()
+activate Company
+Company->importedTestStore:addNewParameterValue(rt, parameterList, value)
+activate importedTestStore
+Company->importedTestStore:reateImportedTest(client)
+Company->importedTestStore:saveImportedTest()
+deactivate
+deactivate
+deactivate
+deactivate
+importedTestConnectorToInterface->importedTestConnectorToInterface:valid++
+else
+importedTestConnectorToInterface->importedTestConnectorToInterface:fail++
+end
+importedTestConnectorToInterface->importedTestConnectorToInterface:cont++
+end
+importedTestConnectorToInterface->importedTestConnectorToInterface:total=cont-1
+alt total==valid
+importedTestConnectorToInterface->importedTestController:storeTest()
+activate importedTestController
+importedTestController->Company:getImportedTestStore()
+activate Company
+Company->importedTestStore:addToListRt()
+activate importedTestStore
+deactivate
+deactivate
+deactivate
+deactivate importedTestConnectorToInterface
+alt lis!=null
+ImportTestInterfaceController->ImportTestInterfaceController:tableView.setItems(list)
+else
+ImportTestInterfaceController->ImportTestInterfaceController:alert = new Alert\n(Alert.AlertType.ERROR,"File Format Exception"); 
+ImportTestInterfaceController->ImportTestInterfaceController:alert.show()
+ImportTestInterfaceController-->"Laboratory Coordinator":Shows imported file
+deactivate ImportTestInterfaceController
+end
+deactivate "Laboratory Coordinator"
+
+@enduml

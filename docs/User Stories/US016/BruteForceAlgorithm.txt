@@ -1,0 +1,13 @@
+1ª|2A                     |int somamaxima=Integer.MinValue, valoresdoarray=0;
+2ª|(n+1)AouI+(n+1)C       |for 0 to n
+3ª|nOp+nA                 |valoresdoarray=valoresdoarray+a(n)
+4ª|1C                     |if somamaxima<valoresdoarray
+5ª|1A                     |somamaxima=valoresdoarray
+6ª|-                      |
+7ª|1C                     |if valoresdoarray<0		
+8ª|1A                     |valoresdoarray=0
+9ª|-                      |
+10ª|-                     |
+11ª|1R                    |return somamaxima
+Total 4n+9
+Complexidade: O(n)

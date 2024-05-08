@@ -1,0 +1,16 @@
+@startuml
+actor Laboratory Coordinatorr
+Laboratory Coordinatorr -SystemStarts the interface
+activate Laboratory Coordinatorr
+activate System
+deactivate System
+Laboratory Coordinatorr -SystemonActionAddFile()
+activate System
+Laboratory Coordinatorr --SystemAsks to choose a file 
+deactivate System
+Laboratory Coordinatorr -SystemChooses file
+activate System
+Laboratory Coordinatorr --SystemShows imported file
+deactivate
+deactivate Laboratory Coordinatorr
+@enduml

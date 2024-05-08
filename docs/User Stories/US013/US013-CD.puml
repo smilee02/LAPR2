@@ -1,0 +1,59 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class CheckingTestsUI
+class ShowClientsController{
+{method}+initialize()
+{method}+checkTestDetailsResults()
+}
+class CheckingTestsController{
+{method}+getOrderedClientsList()
+{method}+getClientsValidated()
+{method}+getResultOfClient(client)
+}
+class Company{
+{method}+getClientStore()
+{method}+getValidateStore()
+{method}+getCheckingTestStore()
+{method}+getRecordResultStore()
+}
+class ValidateStore{
+{method}+getValidatedList()
+}
+class ClientStore{
+{method}+getClientList()
+}
+class SortingAlgorithm{
+{method}+orderClients(clientList)
+}
+class ClientMapper{
+{method}+toDTO(clientList)
+}
+class ShowResultsController{
+{method}+setClient()
+{method}+initialize()
+}
+class CheckingTestsStore{
+{method}+getResultOfClient(client.getTIN())
+}
+class RecordResultStore{
+{method}+getTestResultsWithTests()
+}
+class TestDetailsResultsMapper{
+{method}+toDTO()
+}
+
+
+CheckingTestsUI ..> ShowClientsController
+ShowClientsController ..> ShowResultsController
+CheckingTestsController ..> Company
+Company -> CheckingTestsStore: uses
+Company -> ClientStore: uses
+Company -> RecordResultStore: uses
+Company -> ValidateStore: uses
+ShowClientsController ..> CheckingTestsController
+CheckingTestsController ..> SortingAlgorithm: uses
+CheckingTestsUI -> CheckingTestsMapper: adopts
+CheckingTestsUI -> ClientMapper: adopts
+ShowResultsController -> TestDetailsResultsMapper: adopts
+@enduml

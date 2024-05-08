@@ -1,0 +1,72 @@
+@startuml
+
+title Classes - Class Diagram
+skinparam classAttributeIconSize 0
+
+
+class ImportTestInterfaceController {
++fillFile()
++addUser()
++onActionAddFile(mouseEvent)
++onActionBack(actionEvent)
+}
+class ImportedTestConnectorToInterface{
++filePart(filepath)
++clearList()
++registerClient(otherLine)
++validateDate(date)
++fixString()
++fillArr()
++convertToDate(date)
++validateHours(date)
++validateName(name)
++validateEmail(email)
++checkNumber(number,length)
++getCategoryLines(line)
++logFile()
++registerTest(firstline,otherline)
+}
+class importedTestController{
++getCompany()
++validateCCN(ccn)
++registerClient()
++validateTest(test)
++getTypeOfTest(test)
++validateParameter()
++validateCategory()
++getParameterList()
++validateTestNumber(number)
++validateNHS(nhs)
++validateLaboratoryId(labId)
++registerTest()
++storeTest()
++validateError()
++registerRecordResult()
++getList()
++clearList()
+}
+class importedTestStore{
++createImportedTest(client)
++addNewParameterValue()
++getRecordResult()
++saveImportedTest()
++addRegisterTest()
++addToListRt()
++getImportedTests()
++clearList()
+}
+
+class Company{
++getValidateStore()
++getRegisterTestStore()
++getRecordResultStore()
++getClientStore()
+}
+
+ImportTestInterfaceController -r..> ImportedTestConnectorToInterface
+ImportedTestConnectorToInterface -r--> importedTestController:interact
+importedTestController -r-> importedTestStore:needs
+importedTestStore -r--> Company:uses
+importedTestController -r..> Company
+
+@enduml

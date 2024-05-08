@@ -1,0 +1,37 @@
+@startuml
+
+title Classes - Class Diagram
+skinparam classAttributeIconSize 0
+
+
+class Administrator{
+}
+
+
+class ClinicalAnalysisLaboratory {
+-Laboratory ID
+-Name
+-Address
+-Phone Number
+-TIN number
+}
+class Test{
+-Test Type
+-Internal Code
+-NHS Code
+-Description Of The Collection Method
+-Date and Time Collected
+-Date and Time of Chemical Analysis
+-Date and Time of Validation of the Test
+-Date and Time of the Diagnosis
+
+}
+class Laboratories{
+}
+
+Administrator -d- ClinicalAnalysisLaboratory : register >
+Test -l- ClinicalAnalysisLaboratory : determine analysis types >
+ClinicalAnalysisLaboratory -d- Laboratories : is part of >
+
+
+@enduml

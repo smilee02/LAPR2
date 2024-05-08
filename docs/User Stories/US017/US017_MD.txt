@@ -1,0 +1,62 @@
+@startuml
+
+title Classes - Class Diagram
+skinparam classAttributeIconSize 0
+
+
+class "Laboratory Coordinator" {
+-Employee ID
+-Organization Role
+-Name
+-Adress
+-E-mail
+-Phone Number
+-{field}Standard Occupational Classification (SOC) Code
+}
+class Client{
+  -Name
+  -Sex
+  -Citizen Card Number
+  {field}-National Healthcare Service (NHS) Number
+  -Birth Date
+  -Sex
+  {field}-Tax Identification Number (TIN)
+  -Phone Number
+  -E-mail
+  -Lab Order
+}
+
+class Test{
+  -Test Type
+  -Internal Code
+  -NHS Code
+  -Description Of The Collection Method
+  -Date and Time Collected
+  -Date and Time of Chemical Analysis
+  -Date and Time of Validation of the Test
+  -Date and Time of the Diagnosis
+}
+
+class "TestType"{
+-code
+-description
+-collectingMethod
+}
+class TestParameters{
+
+}
+class TestParametersResults{
+
+}
+class Diagnosis{
+-Report
+}
+
+"Laboratory Coordinator" -d- Test : Imports tests >
+Client -r- Test : performed by <
+Test -r- "TestType": is of* >
+Test -d- TestParameters: > requests analysis of
+TestParameters -d- TestParametersResults: > contains
+TestParametersResults -d- Diagnosis: < made about
+
+@enduml

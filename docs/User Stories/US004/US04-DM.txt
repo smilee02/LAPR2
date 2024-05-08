@@ -1,0 +1,49 @@
+@startuml
+
+title Classes - Class Diagram
+skinparam classAttributeIconSize 0
+
+
+class Receptionist {
+  -Employee ID
+  -Organization Role~
+  -Name
+  -Adress
+  -E-mail
+  -Phone Number
+  {field}-Standard Occupational Classification (SOC) Code
+}
+class Client{
+  -Name
+  -Sex
+  -Citizen Card Number
+  {field}-National Healthcare Service (NHS) Number
+  -Birth Date
+  -Sex
+  {field}-Tax Identification Number (TIN)
+  -Phone Number
+  -E-mail
+  -Lab Order
+}
+class LabOrder{
+  -Type of Test
+  -Parameters
+}
+class Test{
+  -Test Type
+  -Internal Code
+  -NHS Code
+  -Description Of The Collection Method
+  -Date and Time Collected
+  -Date and Time of Chemical Analysis
+  -Date and Time of Validation of the Test
+  -Date and Time of the Diagnosis
+}
+LabOrder -R- Client : belongs to > 
+LabOrder -d-Test : contains >
+LabOrder -d-Receptionist : is given to >
+Receptionist -d- Test : register a test for client >
+Client -d- Test : performed by <
+
+
+@enduml

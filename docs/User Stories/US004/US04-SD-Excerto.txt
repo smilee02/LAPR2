@@ -1,0 +1,18 @@
+@startuml
+actor Receptionist
+Receptionist->":System":Starts to register a new test\nto be performed by the client
+activate ":System"
+Receptionist<--":System":Request Data\n(i.e TIN, NHS, test type, parameters)
+deactivate ":System"
+Receptionist->":System":Types requested data
+activate ":System"
+loop n Parameters
+Receptionist->":System":Types requested data(Parameters)
+end
+Receptionist<--":System":Show the data and requests a confirmation
+deactivate ":System"
+Receptionist->":System":Confirms the data
+activate ":System"
+Receptionist<--":System":Informs operation success
+deactivate ":System"
+@endumlhl

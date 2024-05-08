@@ -1,0 +1,89 @@
+@startuml
+autonumber
+actor "Clinical Chemistry Technologist"
+activate "Clinical Chemistry Technologist"
+"Clinical Chemistry Technologist" -> ":CheckingTestsUI": starts the checking details/results process
+activate ":CheckingTestsUI"
+":CheckingTestsUI" -> ":ShowClientsController": initialize()
+activate ":ShowClientsController"
+
+":ShowClientsController" -> ":CheckingTestsController": clientList = getOrderedClientsList()
+activate ":CheckingTestsController"
+":CheckingTestsController" -> ":Company": validateStore = getValidateStore()
+activate ":Company"
+deactivate
+":CheckingTestsController" -> ":ValidateStore": validateList = validateStore.getValidatedList()
+activate ":ValidateStore"
+deactivate
+":CheckingTestsController" -> ":Company": clientStore = getClientStore()
+activate ":Company"
+deactivate
+":CheckingTestsController" -> ":ClientStore": client = clientStore.getClientList()
+activate ":ClientStore"
+deactivate
+loop x to validateList.length
+loop y to clientList.length
+alt x.getTestRegistered.getTIN()==y.getTIN()
+":CheckingTestsController" -> ":CheckingTestsController":clientList.add(y)
+end
+end
+end
+":CheckingTestsController" -> ":SortingAlgorithm":orderedClients = orderClients(clientList)
+activate ":SortingAlgorithm"
+deactivate ":SortingAlgorithm"
+":ShowClientsController" -> ":ClientMapper": mapper = new ClientMapper()
+activate ":ClientMapper"
+deactivate
+":ShowClientsController" -> ":ClientMapper": mapper.toDTO(clientList)
+activate ":ClientMapper"
+deactivate
+deactivate ":ShowClientsController"
+deactivate
+deactivate ":CheckingTestsController"
+":CheckingTestsUI" --> "Clinical Chemistry Technologist": shows the list of clients ordered
+deactivate ":CheckingTestsUI"
+"Clinical Chemistry Technologist" -> ":CheckingTestsUI": chooses the client
+activate ":CheckingTestsUI"
+":CheckingTestsUI" -> ":ShowClientsController":checkTestDetailsResults
+activate ":ShowClientsController"
+":ShowClientsController" -> ":ShowClientsController":object = tblClients.getSelectionModel().getSelectedItem()
+":ShowClientsController" -> ":ShowClientsController":client = object.getClient
+":ShowClientsController" -> ":ShowResultsController": setClient(client)
+activate ":ShowResultsController"
+deactivate
+":ShowClientsController" -> ":ShowResultsController": initialize()
+activate ":ShowResultsController"
+":ShowResultsController" -> ":CheckingTestsController":list = getResultsOfClient(client)
+activate ":CheckingTestsController"
+":CheckingTestsController" -> ":Company":checkingTestsStore = getCheckingTestStore()
+activate ":Company"
+deactivate
+":CheckingTestsController" -> ":CheckingTestsStore": checkingTestsStore.getResultsOfClient(client.getTIN())
+activate ":CheckingTestsStore"
+":CheckingTestsStore" -> ":Company": recordResultStore =  getRecordResultStore()
+activate ":Company"
+deactivate
+":CheckingTestsStore" -> ":RecordResultStore": recordResultList = recordResultStore.getTestResultsWithTests()
+activate ":RecordResultStore"
+deactivate
+loop x to recordResultList.length
+alt x.getTest().getTIN()==(client.getTIN())
+":CheckingTestsStore" -> ":CheckingTestsStore": recordResults.add(x)
+end
+end
+":CheckingTestsStore"->":TestDetailsResultsMapper":mapper = new TestDetailsResultsMapper()
+activate ":TestDetailsResultsMapper"
+deactivate
+":CheckingTestsStore" -> ":TestDetailsResultsMapper": testDetailsResultsDTOS = mapper.toDTO(recordResults)
+activate ":TestDetailsResultsMapper"
+deactivate
+":CheckingTestsStore" -> ":CheckingTestsController": recordResult = testDetailsResultsDTOS
+":CheckingTestsController" -> ":ShowResultsController":list = testDetailsResultsDTOS
+":CheckingTestsUI" --> "Clinical Chemistry Technologist": shows the client test results/details
+deactivate ":CheckingTestsStore"
+deactivate ":ShowResultsController"
+deactivate ":CheckingTestsController"
+deactivate ":ShowClientsController"
+deactivate ":CheckingTestsUI"
+deactivate "Clinical Chemistry Technologist"
+@enduml

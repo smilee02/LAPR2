@@ -1,0 +1,38 @@
+@startuml
+
+title Classes - Class Diagram
+skinparam classAttributeIconSize 0
+
+class RegisterClinicalAnalysisLaboratoryUI{
+}
+class Administrator{
+}
+class ClinicalAnalysisLaboratoryController{
++RegisterClinicalAnalysisLaboratory(Laboratory id, name, \naddress, phone number, TIN number)
++SaveClinicalAnalysisLaboratory()
+}
+class Company{
++RegisterClinicalAnalysisLaboratory(Laboratory id, name, \naddress, phone number, TIN number)
++validateClinicalAnalysisLaboratory(cal)
++SaveClinicalAnalysisLaboratory(cal)
++validateClinicalAnalysisLaboratory(cal)
++addClinicalAnalysisLaboratory(cal)
+}
+class ClinicalAnalysisLaboratory{
+-Laboratory id
+-name
+-address
+-phone number
+-TIN number
++ClinicalAnalysisLaboratory(Laboratory id, name, \naddress, phone number, TIN number)
+}
+
+Administrator -d..> RegisterClinicalAnalysisLaboratoryUI
+RegisterClinicalAnalysisLaboratoryUI -d..> ClinicalAnalysisLaboratoryController
+ClinicalAnalysisLaboratoryController -d..> Company
+RegisterClinicalAnalysisLaboratoryUI ..> ClinicalAnalysisLaboratory
+Company -> ClinicalAnalysisLaboratory : adopts >
+
+
+
+@enduml

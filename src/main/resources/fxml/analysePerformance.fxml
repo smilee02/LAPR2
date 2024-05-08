@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #14212d;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.gui.PerformanceAnalyserController">
+   <padding>
+      <Insets bottom="40.0" left="25.0" top="65.0" />
+   </padding>
+   <top>
+      <ImageView fitHeight="43.0" fitWidth="151.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="BASELINE_CENTER">
+         <image>
+            <Image url="@../images/logo.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets bottom="-5.0" right="20.0" />
+         </BorderPane.margin>
+      </ImageView>
+   </top>
+   <center>
+      <LineChart fx:id="lnChartPerformance" minHeight="250.0" prefHeight="204.0" prefWidth="555.0" BorderPane.alignment="CENTER">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+         <BorderPane.margin>
+            <Insets bottom="80.0" right="20.0" top="50.0" />
+         </BorderPane.margin>
+      </LineChart>
+   </center>
+   <bottom>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="btnBack" mnemonicParsing="false" onAction="#onActionGoBack" prefHeight="20.0" prefWidth="120.0" style="-fx-background-color: #21304f; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #318e92;" text="Back" textFill="#e0faff" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="225.0" top="40.0" />
+               </GridPane.margin>
+            </Button>
+            <Label style="-fx-background-color: #21304f;" text="Date" textFill="#e0faff">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="lblDateFirst" promptText="dd/mm/yyyy">
+               <GridPane.margin>
+                  <Insets left="50.0" right="440.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label style="-fx-background-color: #21304f;" text="Date" textFill="#e0faff">
+               <GridPane.margin>
+                  <Insets left="190.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="lblDateLate" prefHeight="25.0" prefWidth="79.0" promptText="dd/mm/yyyy">
+               <GridPane.margin>
+                  <Insets left="220.0" right="270.0" />
+               </GridPane.margin>
+            </TextField>
+            <Button fx:id="btnGetPerformance" maxHeight="50.0" maxWidth="108.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#showPerformance" prefHeight="50.0" prefWidth="108.0" style="-fx-background-color: #21304f; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #318e92;" text="Get Performance" textFill="#e0faff" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="440.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="Tahoma" size="12.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="comboBoxAlgorithm" prefWidth="150.0" promptText="Benchmark" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="50.0" right="410.0" top="30.0" />
+               </GridPane.margin>
+            </ComboBox>
+            <Label style="-fx-background-color: #21304f;" text="Algorithm" textFill="#e0faff" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="-10.0" top="30.0" />
+               </GridPane.margin>
+            </Label>
+         </children>
+      </GridPane>
+   </bottom>
+</BorderPane>

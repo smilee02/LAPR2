@@ -1,0 +1,91 @@
+@startuml
+actor Receptionist
+autonumber
+activate Receptionist
+Receptionist->RegisterTestUI: Starts to register a new test\nto be performed by the client
+activate RegisterTestUI
+Receptionist<--RegisterTestUI:Request Data\n(i.e TIN, NHS, test type, parameters)
+
+deactivate RegisterTestUI
+
+Receptionist->RegisterTestUI:Types requested Data
+activate RegisterTestUI
+activate RegisterTestUI
+RegisterTestUI->RegisterTestController:validateCCN(TIN)
+activate RegisterTestController
+RegisterTestController->Company:getClientList()
+activate Company
+deactivate RegisterTestController
+deactivate RegisterTestUI
+deactivate Company
+RegisterTestUI->RegisterTestController:validateTestType(test type)
+activate RegisterTestUI
+activate RegisterTestController
+RegisterTestController->Company:getTestTypeList()
+activate Company
+deactivate RegisterTestUI
+
+deactivate RegisterTestController
+deactivate Company
+loop n Parameters
+Receptionist->RegisterTestUI:Types requested Data(parameters)
+end
+RegisterTestUI->RegisterTestController:validateParameters(parameters)
+activate RegisterTestUI
+activate RegisterTestController
+RegisterTestController->Company:getParameterList()
+activate Company
+deactivate Company
+deactivate RegisterTestUI
+deactivate Company
+deactivate RegisterTestController
+
+RegisterTestUI->RegisterTestController:RegisterTest(\ni.e TIN, NHS, test type, parameters)
+activate RegisterTestController
+RegisterTestController->Company:rt = RegisterTest(\ni.e TIN, NHS, test type, parameters)
+activate Company
+Company->"rt:RegisterTest":create(\ni.e TIN, NHS, test type, parameters)
+deactivate Company
+RegisterTestController->Company:validateRegisterTest(rt)
+
+
+
+activate Company
+
+deactivate Company
+deactivate RegisterTestController
+deactivate Company
+RegisterTestController->":RegisterTestMapper":mapper = newValidateMapper()
+activate RegisterTestController
+activate ":RegisterTestMapper"
+RegisterTestController->":RegisterTestMapper":dto = mapper.dto(rt)
+deactivate ":RegisterTestMapper"
+RegisterTestUI->RegisterTestController:showDto()
+RegisterTestUI->RegisterTestController:getRegisterTestList()
+deactivate RegisterTestController
+Receptionist<--RegisterTestUI:Show the data and requests a confirmation
+deactivate RegisterTestUI
+
+Receptionist->RegisterTestUI:Confirms the data
+activate RegisterTestUI
+RegisterTestUI->RegisterTestController:saveRegisterTest()
+activate RegisterTestController
+RegisterTestController->Company:saveRegisterTest(rt)
+activate Company
+Company->Company:validateRegisterTest(rt)
+activate Company
+deactivate Company
+
+Company->Company:addRegisterTest(rt)
+activate Company
+deactivate Company
+deactivate Company
+deactivate Company
+Receptionist<--RegisterTestUI:Informs operation success
+deactivate Receptionist
+
+
+
+
+
+@enduml
